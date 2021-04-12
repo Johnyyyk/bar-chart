@@ -13,7 +13,7 @@ class Manager : public QObject
 public:
   explicit Manager() {}
 
-  void init();
+  void init(int columnCount);
 
 private:
   void initConnections();

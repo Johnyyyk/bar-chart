@@ -6,7 +6,7 @@
 
 #include "FrontBackProvider.h"
 
-void Manager::init()
+void Manager::init(int columnCount)
 {
   fbProvider = new FrontBackProvider(this);
   initConnections();

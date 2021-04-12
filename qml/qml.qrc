@@ -2,5 +2,10 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>pages/mainPage/MainPage.qml</file>
+        <file>pages/mainPage/components/LeftBar.qml</file>
+        <file>pages/mainPage/components/BarChart.qml</file>
+        <file>custom/ProgressBarCustom.qml</file>
+        <file>pages/mainPage/components/BarChartProgressBar.qml</file>
+        <file>pages/mainPage/components/BarChartColumn.qml</file>
     </qresource>
 </RCC>
