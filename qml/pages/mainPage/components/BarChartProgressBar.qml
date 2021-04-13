@@ -28,4 +28,12 @@ Rectangle {
             height: 0
         }
     }
+
+    Connections {
+        target: frontBackProvider
+
+        onSetFrontProgress: {
+            pbLoadProgress.value = progress;
+        }
+    }
 }

@@ -2,6 +2,7 @@
 
 // Qt includes
 #include <QObject>
+#include <QJsonObject>
 
 class FrontBackProvider : public QObject
 {
@@ -11,9 +12,10 @@ public:
   explicit FrontBackProvider(QObject *parent = nullptr) : QObject(parent) {}
 
 signals: // To back
-//  void press(double x, double y);
+  void loadFile(QString path);
+  void loadByText(QString text);
 
 signals: // To front
-//  void setFrontMainScaleSliderPosition(double position);
-
+  void setFrontBarChart(QJsonObject data);
+  void setFrontProgress(double progress);
 };

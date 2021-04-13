@@ -17,20 +17,32 @@ Item {
         }
 
         function fillBarChart(data) {
+            if (data === undefined) return;
+
             clearBarChart();
 
             var column = Qt.createComponent("BarChartColumn.qml");
 
-            for (var i = 0; i <= 15; ++i) {
+            for (var i = 0; i < data.columns.length; ++i) {
+                var wordData = data.columns[i];
+
                 column.createObject(rColumns,
-                                    {text: "№" + i.toString()});
+                                    {
+                                        text: wordData.word + " (" +
+                                              wordData.count + ")",
+                                        value: wordData.count /
+                                               data.maxWordRepetition
+                                    });
             }
+            updateColumnsSize();
         }
 
         function clearBarChart() {
-            for(var i = children.length; i > 0 ; i--) {
+            for(var i = children.length; i > 0; i--) {
                 children[i-1].destroy();
             }
+            children = []; // for fast clean array, because destroy remove
+                           // object not momentaly
         }
 
         anchors.fill: parent
@@ -42,9 +54,13 @@ Item {
         onHeightChanged: {
             updateColumnsSize();
         }
+    }
 
-        Component.onCompleted: {
-            fillBarChart();
+    Connections {
+        target: frontBackProvider
+
+        onSetFrontBarChart: {
+            rColumns.fillBarChart(data);
         }
     }
 }

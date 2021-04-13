@@ -19,7 +19,7 @@ Rectangle {
             title: "Load file"
             nameFilters: ["Text files (*.txt)", "All files (*)"]
             onAccepted: {
-                // TODO send file path to back
+                frontBackProvider.loadFile(file);
             }
         }
         Button {
@@ -54,7 +54,7 @@ Rectangle {
             height: 50
             text: "Load by text"
             onReleased: {
-                // TODO send text to back
+                frontBackProvider.loadByText(taText.text);
             }
         }
         TextArea {
