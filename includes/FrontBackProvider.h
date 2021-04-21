@@ -12,6 +12,8 @@ public:
   explicit FrontBackProvider(QObject *parent = nullptr) : QObject(parent) {}
 
 signals: // To back
+  void setColumnCount(int count);
+
   void loadFile(QString path);
   void loadByText(QString text);
 

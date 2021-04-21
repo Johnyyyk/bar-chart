@@ -2,9 +2,8 @@
 
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QDebug>
 
-void TextReaderWorker::calcTopWordsFromText(QString text)
+void TextReaderWorker::calcTopWordsFromText(QString text, int topCount)
 {
   auto paragraphs = text.toLower().split("\n");
   std::map< QString, int > columns;
@@ -30,7 +29,7 @@ void TextReaderWorker::calcTopWordsFromText(QString text)
     {
       progress = newProgress;
 
-      emit currentBarChart(getJsonByMap(getTopWords(columns, 15)));
+      emit currentBarChart(getJsonByMap(getTopWords(columns, topCount)));
       emit readPogress(progress);
     }
     ++i;

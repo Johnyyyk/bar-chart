@@ -26,6 +26,8 @@ void Manager::initConnections()
   connect(textReader, &TextReader::setFrontProgress, fbProvider,
           &FrontBackProvider::setFrontProgress);
 
+  connect(fbProvider, &FrontBackProvider::setColumnCount, textReader,
+          &TextReader::setColumnCount);
   connect(fbProvider, &FrontBackProvider::loadFile, textReader,
           &TextReader::readWordsFromFile);
   connect(fbProvider, &FrontBackProvider::loadByText, textReader,

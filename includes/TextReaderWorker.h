@@ -11,7 +11,7 @@ public:
   TextReaderWorker() {}
 
 public slots:
-  void calcTopWordsFromText(QString text);
+  void calcTopWordsFromText(QString text, int topCount);
 
 private:
   std::map< int, QString > getTopWords(const std::map< QString, int > &words,

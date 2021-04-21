@@ -13,6 +13,38 @@ Rectangle {
         anchors.margins: 10
         anchors.fill: parent
 
+        Label {
+            id: lColumnCount
+
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            text: "Column count:"
+        }
+        TextField {
+            id: tfColumnCount
+
+            anchors.top: lColumnCount.bottom
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.right: parent.right
+            validator: RegExpValidator { regExp: /[0-9]+/ }
+            text: "15"
+            selectByMouse: true
+            onTextEdited: {
+                frontBackProvider.setColumnCount(parseInt(text));
+            }
+        }
+        Rectangle {
+            id: rectLineFirst
+
+            anchors.top: tfColumnCount.bottom
+            anchors.topMargin: 10
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: 1
+            color: "black"
+        }
         FileDialog {
             id: fdLoadFile
 
@@ -25,7 +57,8 @@ Rectangle {
         Button {
             id: btnLoadFile
 
-            anchors.top: parent.top
+            anchors.top: rectLineFirst.bottom
+            anchors.topMargin: 10
             anchors.left: parent.left
             anchors.right: parent.right
             height: 50
@@ -35,7 +68,7 @@ Rectangle {
             }
         }
         Rectangle {
-            id: rectLine
+            id: rectLineSecond
 
             anchors.top: btnLoadFile.bottom
             anchors.topMargin: 10
@@ -47,7 +80,7 @@ Rectangle {
         Button {
             id: btnLoadByText
 
-            anchors.top: rectLine.bottom
+            anchors.top: rectLineSecond.bottom
             anchors.topMargin: 10
             anchors.left: parent.left
             anchors.right: parent.right
