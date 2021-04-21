@@ -12,12 +12,7 @@ public:
 
 public slots:
   void readWordsFromFile(QString path);
-  void readWordsFromText(QString text);
-
-private:
-  std::map< int, QString > getTopWords(const std::map< QString, int > &words,
-                                       int topCount);
-  QJsonObject getJsonByMap(const std::map< int, QString > &words);
+  void readWordsFromText(const QString &text);
 
 signals:
   void setFrontBarChart(QJsonObject data);

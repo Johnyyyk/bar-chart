@@ -2,8 +2,11 @@
 
 #include <QDebug>
 #include <QFile>
-#include <QJsonObject>
 #include <QJsonArray>
+#include <QJsonObject>
+#include <QThread>
+
+#include "TextReaderWorker.h"
 
 TextReader::TextReader(QObject* parent) : QObject(parent)
 {
@@ -12,100 +15,40 @@ TextReader::TextReader(QObject* parent) : QObject(parent)
 void TextReader::readWordsFromFile(QString path)
 {
   QFile file(path.remove("file://"));
+  QString text;
 
   if (file.open(QIODevice::ReadOnly))
   {
     QTextStream in(&file);
 
-    readWordsFromText(in.readAll());
+    text = in.readAll();
 
-//    while (!in.atEnd())
-//    {
-//      auto line = in.readLine().toLower();
-
-//      if (line == "") continue;
-
-//      line.remove(QRegExp("(?![a-z])\\S+"));
-
-//      auto words = line.split(" ");
-
-//      for (auto& word : words)
-//      {
-//        if (word == "") continue;
-//        columns[word] += 1;
-//      }
-//      //      qDebug() <<words;
-//    }
     file.close();
   }
+  readWordsFromText(text);
 }
 
-void TextReader::readWordsFromText(QString text)
+void TextReader::readWordsFromText(const QString &text)
 {
-  auto paragraphs = text.toLower().split("\n");
-  std::map< QString, int > columns;
-  double countOfLines = paragraphs.size();
-  int i = 1;
+  auto textReaderWorker = new TextReaderWorker();
+  auto thread = new QThread();
 
-  for (auto& line : paragraphs)
-  {
-    line.remove(QRegExp("(?![a-z])\\S"));
+  thread->setObjectName("ReaderThread");
+  textReaderWorker->moveToThread(thread);
 
-    auto words = line.split(" ");
+  connect(thread, &QThread::started, textReaderWorker,
+          [text, textReaderWorker]() {
+            textReaderWorker->calcTopWordsFromText(text);
+          });
+  connect(textReaderWorker, &TextReaderWorker::currentBarChart, this,
+          &TextReader::setFrontBarChart);
+  connect(textReaderWorker, &TextReaderWorker::readPogress, this,
+          &TextReader::setFrontProgress);
+  connect(textReaderWorker, &TextReaderWorker::readFinish, thread,
+          &QThread::quit);
+  connect(textReaderWorker, &TextReaderWorker::readFinish, textReaderWorker,
+          &TextReaderWorker::deleteLater);
+  connect(thread, &QThread::finished, thread, &QThread::deleteLater);
 
-    for (auto& word : words)
-    {
-      if (word == "") continue;
-      columns[word] += 1;
-    }
-
-    emit setFrontBarChart(getJsonByMap(getTopWords(columns, 15)));
-    emit setFrontProgress(i / countOfLines);
-    ++i;
-  }
-}
-
-std::map<int, QString> TextReader::getTopWords(
-    const std::map< QString, int >& words, int topCount)
-{
-  std::map< int, QString > topWords;
-
-  for (auto &word : words)
-  {
-    if (topWords[word.second].isEmpty())
-      topWords[word.second] = word.first;
-    else
-      topWords[word.second] = topWords[word.second] + ", " + word.first;
-  }
-
-  while (topWords.size() > topCount)
-  {
-    topWords.erase(topWords.begin());
-  }
-
-  return topWords;
-}
-
-QJsonObject TextReader::getJsonByMap(const std::map< int, QString > &words)
-{
-  QJsonObject topWordsJson;
-  QJsonArray columns;
-  int maxWordRepetition = 0;
-
-  for (auto word = words.rbegin(); word != words.rend(); ++word)
-  {
-    QJsonObject wordData;
-
-    wordData["count"] = word->first;
-    wordData["word"] = word->second;
-
-    if (word->first > maxWordRepetition) maxWordRepetition = word->first;
-
-    columns.push_back(wordData);
-  }
-
-  topWordsJson["maxWordRepetition"] = maxWordRepetition;
-  topWordsJson["columns"] = columns;
-
-  return topWordsJson;
+  thread->start();
 }
