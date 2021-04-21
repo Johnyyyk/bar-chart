@@ -44,7 +44,6 @@ Item {
             verticalAlignment: Qt.AlignVCenter
             color: rectColumn.color.r + rectColumn.color.g +
                    rectColumn.color.b < 1.5 ? "white" : "black"
-            wrapMode: Text.Wrap
             elide: Text.ElideRight
             rotation: -90
         }
