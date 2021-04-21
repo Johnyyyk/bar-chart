@@ -30,7 +30,7 @@ file(GLOB SRC "src/*.cpp")
 file(GLOB HEADERS "includes/*.h")
 file(GLOB RESOURCES "qml/*.qrc")
 
-add_executable(${PROJECT_NAME} ${SRC} ${HEADERS} ${RESOURCES})
+add_executable(${PROJECT_NAME} WIN32 ${SRC} ${HEADERS} ${RESOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${PROJECT_SOURCE_DIR}/includes

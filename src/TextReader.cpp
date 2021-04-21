@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QThread>
+#include <QUrl>
 
 #include "TextReaderWorker.h"
 
@@ -17,7 +18,8 @@ void TextReader::setColumnCount(int count)
 
 void TextReader::readWordsFromFile(QString path)
 {
-  QFile file(path.remove("file://"));
+  QFile file(QUrl(path).toLocalFile());
+
   QString text;
 
   if (file.open(QIODevice::ReadOnly))
