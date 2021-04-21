@@ -19,7 +19,6 @@ Item {
     Row {
         id: rColumns
 
-
         function updateColumnsSize() {
             for (var i = 0; i < children.length; ++i) {
                 var child = children[i];
@@ -57,7 +56,7 @@ Item {
                 children[i-1].destroy();
             }
             children = []; // for fast clean array, because destroy remove
-                           // object not momentaly
+            // object not momentaly
         }
 
         anchors.fill: parent

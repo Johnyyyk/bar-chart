@@ -22,6 +22,4 @@ private:
 signals:
   void setFrontBarChart(QJsonObject data);
   void setFrontProgress(double progress);
-
 };
-

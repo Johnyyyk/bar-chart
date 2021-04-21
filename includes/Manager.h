@@ -1,8 +1,5 @@
 #pragma once
 
-// STD includes
-#include <memory>
-
 // Qt includes
 #include <QQmlApplicationEngine>
 

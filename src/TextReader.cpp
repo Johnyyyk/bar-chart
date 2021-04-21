@@ -1,10 +1,8 @@
 #include "TextReader.h"
 
 #include <QFile>
-#include <QJsonArray>
-#include <QJsonObject>
-#include <QThread>
 #include <QTextStream>
+#include <QThread>
 
 #include "TextReaderWorker.h"
 
@@ -45,7 +43,7 @@ void TextReader::readWordsFromText(const QString& text)
           [=]() { textReaderWorker->calcTopWordsFromText(text, columnCount); });
   connect(textReaderWorker, &TextReaderWorker::currentBarChart, this,
           &TextReader::setFrontBarChart);
-  connect(textReaderWorker, &TextReaderWorker::readPogress, this,
+  connect(textReaderWorker, &TextReaderWorker::readProgress, this,
           &TextReader::setFrontProgress);
   connect(textReaderWorker, &TextReaderWorker::readFinish, thread,
           &QThread::quit);

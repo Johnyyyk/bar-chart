@@ -7,7 +7,7 @@ Item {
     property alias text: lColumn.text
     property alias color: rectColumn.color
 
-    property real value: Math.random()
+    property real value: 0
 
     function needCheckTruncateChanged() {
         iColumnLabel.state = ""

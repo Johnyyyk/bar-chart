@@ -8,7 +8,7 @@ class TextReaderWorker : public QObject
   Q_OBJECT
 
 public:
-  TextReaderWorker() {}
+  TextReaderWorker(QObject *parent = nullptr) : QObject(parent) {}
 
 public slots:
   void calcTopWordsFromText(QString text, int topCount);
@@ -20,6 +20,6 @@ private:
 
 signals:
   void currentBarChart(QJsonObject data);
-  void readPogress(double progress);
+  void readProgress(double progress);
   void readFinish();
 };

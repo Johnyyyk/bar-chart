@@ -1,9 +1,7 @@
 #include "Manager.h"
 
 // Qt includes
-#include <QObject>
 #include <QQmlContext>
-#include <QThread>
 
 #include "FrontBackProvider.h"
 #include "TextReader.h"
@@ -14,8 +12,7 @@ void Manager::init()
   textReader = new TextReader();
   initConnections();
 
-  engine.rootContext()->setContextProperty("frontBackProvider",
-                                           fbProvider);
+  engine.rootContext()->setContextProperty("frontBackProvider", fbProvider);
   engine.load(QUrl(QStringLiteral("qrc:/main.qml"), QUrl::TolerantMode));
 }
 

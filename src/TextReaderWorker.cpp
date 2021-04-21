@@ -1,7 +1,7 @@
 #include "TextReaderWorker.h"
 
-#include <QJsonObject>
 #include <QJsonArray>
+#include <QJsonObject>
 
 void TextReaderWorker::calcTopWordsFromText(QString text, int topCount)
 {
@@ -11,13 +11,13 @@ void TextReaderWorker::calcTopWordsFromText(QString text, int topCount)
   int i = 1;
   double progress = 0.;
 
-  for (auto& line : paragraphs)
+  for (auto &line : paragraphs)
   {
     line.remove(QRegExp("(?![a-z])\\S"));
 
     auto words = line.split(" ");
 
-    for (auto& word : words)
+    for (auto &word : words)
     {
       if (word == "") continue;
       columns[word] += 1;
@@ -25,19 +25,21 @@ void TextReaderWorker::calcTopWordsFromText(QString text, int topCount)
 
     double newProgress = i / countOfLines;
 
-    if (static_cast< int >(progress * 100) != static_cast< int >(newProgress * 100))
+    if (static_cast< int >(progress * 100) !=
+        static_cast< int >(newProgress * 100))
     {
       progress = newProgress;
 
       emit currentBarChart(getJsonByMap(getTopWords(columns, topCount)));
-      emit readPogress(progress);
+      emit readProgress(progress);
     }
     ++i;
   }
   emit readFinish();
 }
 
-std::map<int, QString> TextReaderWorker::getTopWords(const std::map<QString, int> &words, unsigned long topCount)
+std::map< int, QString > TextReaderWorker::getTopWords(
+    const std::map< QString, int > &words, unsigned long topCount)
 {
   std::map< int, QString > topWords;
 
@@ -57,7 +59,8 @@ std::map<int, QString> TextReaderWorker::getTopWords(const std::map<QString, int
   return topWords;
 }
 
-QJsonObject TextReaderWorker::getJsonByMap(const std::map<int, QString> &words)
+QJsonObject TextReaderWorker::getJsonByMap(
+    const std::map< int, QString > &words)
 {
   QJsonObject topWordsJson;
   QJsonArray columns;
