@@ -6,7 +6,7 @@
 void TextReaderWorker::calcTopWordsFromText(QString text, int topCount)
 {
   auto paragraphs = text.toLower().split("\n");
-  std::map< QString, int > columns;
+  std::map< QString, int > words;
   double countOfLines = paragraphs.size();
   int i = 1;
   double progress = 0.;
@@ -15,12 +15,12 @@ void TextReaderWorker::calcTopWordsFromText(QString text, int topCount)
   {
     line.remove(QRegExp("(?![a-z])\\S"));
 
-    auto words = line.split(" ");
+    auto lineWords = line.split(" ");
 
-    for (auto &word : words)
+    for (auto &word : lineWords)
     {
       if (word == "") continue;
-      columns[word] += 1;
+      words[word] += 1;
     }
 
     double newProgress = i / countOfLines;
@@ -30,7 +30,7 @@ void TextReaderWorker::calcTopWordsFromText(QString text, int topCount)
     {
       progress = newProgress;
 
-      emit currentBarChart(getJsonByMap(getTopWords(columns, topCount)));
+      emit currentBarChart(getJsonByMap(getTopWords(words, topCount)));
       emit readProgress(progress);
     }
     ++i;
@@ -38,17 +38,14 @@ void TextReaderWorker::calcTopWordsFromText(QString text, int topCount)
   emit readFinish();
 }
 
-std::map< int, QString > TextReaderWorker::getTopWords(
+std::map< QString, int > TextReaderWorker::getTopWords(
     const std::map< QString, int > &words, unsigned long topCount)
 {
   std::map< int, QString > topWords;
 
   for (auto &word : words)
   {
-    if (topWords[word.second].isEmpty())
-      topWords[word.second] = word.first;
-    else
-      topWords[word.second] = topWords[word.second] + ", " + word.first;
+    topWords[word.second] = word.first;
   }
 
   while (topWords.size() > topCount)
@@ -56,24 +53,30 @@ std::map< int, QString > TextReaderWorker::getTopWords(
     topWords.erase(topWords.begin());
   }
 
-  return topWords;
+  std::map< QString, int > sortedTopWords;
+
+  for (auto &word : topWords)
+  {
+    sortedTopWords[word.second] = word.first;
+  }
+
+  return sortedTopWords;
 }
 
-QJsonObject TextReaderWorker::getJsonByMap(
-    const std::map< int, QString > &words)
+QJsonObject TextReaderWorker::getJsonByMap(const std::map<QString, int> &words)
 {
   QJsonObject topWordsJson;
   QJsonArray columns;
   int maxWordRepetition = 0;
 
-  for (auto word = words.rbegin(); word != words.rend(); ++word)
+  for (auto &word : words)
   {
     QJsonObject wordData;
 
-    wordData["count"] = word->first;
-    wordData["word"] = word->second;
+    wordData["count"] = word.second;
+    wordData["word"] = word.first;
 
-    if (word->first > maxWordRepetition) maxWordRepetition = word->first;
+    if (word.second > maxWordRepetition) maxWordRepetition = word.second;
 
     columns.push_back(wordData);
   }
