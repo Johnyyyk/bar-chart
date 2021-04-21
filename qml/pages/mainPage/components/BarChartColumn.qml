@@ -4,9 +4,16 @@ import QtQuick.Controls 2.2
 Item {
     id: root
 
-    //    property real value: 0.0
-    property real value: Math.random()
     property alias text: lColumn.text
+
+    property real value: Math.random()
+
+    function needCheckTruncateChanged() {
+        iColumnLabel.state = ""
+
+        if (lColumn.truncated)
+            iColumnLabel.state = "OutColumn";
+    }
 
     Rectangle {
         id: rectColumn
@@ -26,8 +33,6 @@ Item {
         anchors.bottomMargin: 10
         anchors.left: parent.left
         anchors.right: parent.right
-//        width: lColumn.height
-//        height: lColumn.contentWidth
 
         Label {
             id: lColumn
@@ -46,17 +51,12 @@ Item {
 
         states: State {
             name: "OutColumn"
-//            when: lColumn.contentWidth <= rectColumn.height
-            when: lColumn.truncated
 
             PropertyChanges {
                 target: iColumnLabel
 
                 anchors.top: root.top
-                anchors.bottom: root.bottom
-//                height: rectColumn.height
-//                width: root.width
-//                anchors.fill: rectColumn
+                anchors.bottom: rectColumn.top
             }
             PropertyChanges {
                 target: lColumn

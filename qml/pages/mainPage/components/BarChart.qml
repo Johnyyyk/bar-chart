@@ -13,6 +13,7 @@ Item {
 
                 child.width = width / children.length - spacing;
                 child.height = height;
+                child.needCheckTruncateChanged();
             }
         }
 
