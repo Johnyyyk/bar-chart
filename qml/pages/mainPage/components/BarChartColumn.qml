@@ -5,6 +5,7 @@ Item {
     id: root
 
     property alias text: lColumn.text
+    property alias color: rectColumn.color
 
     property real value: Math.random()
 
@@ -22,7 +23,6 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         height: parent.height * value
-        color: Qt.rgba(Math.random(), Math.random(), Math.random(), 1);
     }
     Item {
         id: iColumnLabel

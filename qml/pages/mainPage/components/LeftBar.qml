@@ -24,15 +24,25 @@ Rectangle {
         TextField {
             id: tfColumnCount
 
+            function changeColumnCount(count) {
+                frontBackProvider.setColumnCount(count);
+                barChart.recolorColumns(count);
+            }
+
             anchors.top: lColumnCount.bottom
             anchors.topMargin: 10
             anchors.left: parent.left
             anchors.right: parent.right
             validator: RegExpValidator { regExp: /[0-9]+/ }
-            text: "15"
             selectByMouse: true
             onTextEdited: {
-                frontBackProvider.setColumnCount(parseInt(text));
+                changeColumnCount(parseInt(text))
+            }
+            Component.onCompleted: {
+                var initColumnCount = 15;
+
+                text = initColumnCount;
+                changeColumnCount(initColumnCount);
             }
         }
         Rectangle {

@@ -4,8 +4,21 @@ import QtQuick.Controls 2.2
 Item {
     id: root
 
+    property var columnColors: []
+
+    function recolorColumns(columnCount) {
+        columnColors = [];
+
+        for (var i = 0; i < columnCount; ++i)
+        {
+            columnColors[i] =
+                    Qt.rgba(Math.random(), Math.random(), Math.random(), 1);
+        }
+    }
+
     Row {
         id: rColumns
+
 
         function updateColumnsSize() {
             for (var i = 0; i < children.length; ++i) {
@@ -32,7 +45,8 @@ Item {
                                         text: wordData.word + " (" +
                                               wordData.count + ")",
                                         value: wordData.count /
-                                               data.maxWordRepetition
+                                               data.maxWordRepetition,
+                                        color: columnColors[i]
                                     });
             }
             updateColumnsSize();
