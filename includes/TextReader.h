@@ -2,6 +2,7 @@
 
 // Qt includes
 #include <QObject>
+#include <QJsonObject>
 
 class TextReader : public QObject
 {

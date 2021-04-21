@@ -7,5 +7,6 @@
         <file>custom/ProgressBarCustom.qml</file>
         <file>pages/mainPage/components/BarChartProgressBar.qml</file>
         <file>pages/mainPage/components/BarChartColumn.qml</file>
+        <file>js/barChart.js</file>
     </qresource>
 </RCC>

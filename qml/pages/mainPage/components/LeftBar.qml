@@ -1,6 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import Qt.labs.platform 1.0
+import "../../../js/barChart.js" as BarChartJS
 
 Rectangle {
     id: root
@@ -26,7 +27,7 @@ Rectangle {
 
             function changeColumnCount(count) {
                 frontBackProvider.setColumnCount(count);
-                barChart.recolorColumns(count);
+                BarChartJS.recolorColumns(count);
             }
 
             anchors.top: lColumnCount.bottom
